@@ -43,8 +43,9 @@ jobs:
             --set service.type=LoadBalancer \
             --set service.annotations."service\.beta\.kubernetes\.io/aws-load-balancer-type"=nlb \
             --set wordpressUsername=admin \
-            --set wordpressPassword=defaultpass \
+            --set wordpressPassword=password \
             --set wordpressScheme=https
+
 
       - name: Send logs to Splunk
         env:
