@@ -1,0 +1,44 @@
+name: wordpress Deployment to EKS
+on: 
+  push: 
+    branches: 
+      - main
+
+jobs: 
+  wordpress-deployment:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: "Checkout"
+        uses: actions/checkout@v4
+
+      - name: "Setup AWS Credentials"
+        uses: aws-actions/configure-aws-credentials@v4
+        with: 
+          aws-region: "us-east-1"
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key:  ${{ secrets.AWS_SECRET_KEY }}
+
+
+      - name: "Install kubectl"
+        uses: azure/setup-kubectl@v3
+        with: 
+            version: "v1.19.3"
+        id: "install-kubectl"
+
+
+
+      - name: "Install Helm"
+        run: |
+          curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+          chmod 700 get_helm.sh
+          ./get_helm.sh
+
+      - name: "Connect to the cluster"
+        run: |
+          aws eks update-kubeconfig --region us-east-1 --name my-cluster
+
+      - name: "Apply Kubernetes manifests"
+        run: |
+          Helm upgrade --install wordpress wordpress
+          
+
