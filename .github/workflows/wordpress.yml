@@ -2,7 +2,7 @@ name: wordpress Deployment to EKS
 on: 
   push: 
     branches: 
-      - main
+      - wordpress
 
 jobs: 
   wordpress-deployment:
@@ -26,7 +26,6 @@ jobs:
         id: "install-kubectl"
 
 
-
       - name: "Install Helm"
         uses: azure/setup-helm@v4.2.0
         id: "install-helm"
@@ -37,7 +36,13 @@ jobs:
 
       - name: "Helm to Deploy Wordpress"
         run: |
-          helm upgrade --install wordpress wordpress -f wordpress/values.yaml --set image.repository=wordpress:php7.4-apache --set replicaCount=2
+          helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm install my-wp2 oci://registry-1.docker.io/bitnamicharts/wordpress \
+            --set service.type=LoadBalancer \
+            --set service.annotations."service\.beta\.kubernetes\.io/aws-load-balancer-type"=nlb \
+            --set wordpressUsername=admin \
+            --set wordpressPassword=defaultpass \
+            --set wordpressScheme=https
  
           
   
