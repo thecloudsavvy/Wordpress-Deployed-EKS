@@ -28,17 +28,16 @@ jobs:
 
 
       - name: "Install Helm"
-        run: |
-          curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-          chmod 700 get_helm.sh
-          ./get_helm.sh
+        uses: azure/setup-helm@v4.2.0
+        id: "install-helm"
 
       - name: "Connect to the cluster"
         run: |
           aws eks update-kubeconfig --region us-east-1 --name my-cluster
 
-      - name: "Apply Kubernetes manifests"
+      - name: "Helm to Deploy Wordpress"
         run: |
-          Helm upgrade --install wordpress wordpress
+          helm upgrade --install wordpress wordpress -f wordpress/values.yaml --set image.repository --set replicaCount=2 
           
-
+  
+       
