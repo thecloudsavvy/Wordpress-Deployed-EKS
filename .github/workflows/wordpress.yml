@@ -37,7 +37,8 @@ jobs:
 
       - name: "Helm to Deploy Wordpress"
         run: |
-          helm upgrade --install wordpress wordpress -f wordpress/values.yaml --set image.repository --set replicaCount=2 
+          helm upgrade --install wordpress wordpress -f wordpress/values.yaml --set image.repository=wordpress:php7.4-apache --set replicaCount=2
+ 
           
   
        
