@@ -60,7 +60,7 @@ jobs:
 
           curl -k -H "Authorization: Splunk $SPLUNK_TOKEN" \
                -d "$PAYLOAD" \
-               $SPLUNK_URL/services/collector
+               $SPLUNK_URL
 
           echo "Logs sent to Splunk"
  
