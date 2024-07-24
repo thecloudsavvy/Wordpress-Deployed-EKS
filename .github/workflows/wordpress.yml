@@ -34,6 +34,8 @@ jobs:
         run: |
           aws eks update-kubeconfig --region us-east-1 --name my-cluster
 
+      ### deploy wordpress using bitnami helm chart    
+
       - name: "Helm to Deploy Wordpress"
         run: |
           helm repo add bitnami https://charts.bitnami.com/bitnami
