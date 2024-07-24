@@ -46,7 +46,7 @@ jobs:
             --set wordpressPassword=password \
             --set wordpressScheme=https
 
-      ### send logs to spluk
+      ### send logs to spluk payload
 
       - name: Send logs to Splunk
         env:
