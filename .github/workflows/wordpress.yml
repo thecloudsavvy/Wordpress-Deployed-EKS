@@ -39,7 +39,7 @@ jobs:
       - name: "Helm to Deploy Wordpress"
         run: |
           helm repo add bitnami https://charts.bitnami.com/bitnami
-          helm install my-wp2 oci://registry-1.docker.io/bitnamicharts/wordpress \
+          helm upgrade --install my-wp2 oci://registry-1.docker.io/bitnamicharts/wordpress \
             --set service.type=LoadBalancer \
             --set service.annotations."service\.beta\.kubernetes\.io/aws-load-balancer-type"=nlb \
             --set wordpressUsername=admin \
