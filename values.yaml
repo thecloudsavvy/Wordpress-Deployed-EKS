@@ -1,0 +1,74 @@
+global:
+  logLevel: info
+  splunk:
+    hec:
+      host: "54.146.193.55"  # The hostname or IP address of your Splunk HEC endpoint
+      port: 8000  # The port specified in your endpoint
+      token: "4502a8e8-aedb-477f-a4bd-4687317592b4"  # The HEC token for authentication
+      protocol: "http"  # Protocol based on your provided URL
+      indexName: "main"  # Optional, default is "main"
+      insecureSSL: false  # Set to true if using a self-signed certificate
+  kubernetes:
+    clusterName: "my-cluste"  # The name of your Kubernetes cluster
+  metrics:
+    service:
+      enabled: true
+      headless: true
+  serviceMonitor:
+    enabled: false  # Set to true if you are using Prometheus Operator
+    metricsPort: 24231
+    interval: ""
+    scrapeTimeout: "10s"
+    additionalLabels: {}
+
+splunk-kubernetes-logging:
+  enabled: true
+  logLevel: info  # Set the log level for the Splunk log collector
+  namespace: ""  # Optional, namespace to deploy the agent in
+  fluentd:
+    path: /var/log/containers/*.log
+    exclude_path:
+      - /var/log/containers/kube-svc-redirect*.log
+      - /var/log/containers/tiller*.log
+      - /var/log/containers/*_kube-system_*.log
+  containers:
+    path: /var/log
+    pathDest: /var/lib/docker/containers
+    logFormatType: json  # "json" or "cri"
+    removeBlankEvents: true
+    localTime: false
+    enableStatWatcher: true
+  k8sMetadata:
+    podLabels:
+      - app
+      - k8s-app
+      - release
+    watch: true
+    cache_ttl: 3600
+    propagate_namespace_labels: false
+  rbac:
+    create: true
+  serviceAccount:
+    create: true
+  podSecurityPolicy:
+    create: false
+
+splunk-kubernetes-metrics:
+  enabled: true
+  logLevel: info
+  namespace: ""  # Optional, namespace to deploy the agent in
+  rbac:
+    create: true
+  serviceAccount:
+    create: true
+  podSecurityPolicy:
+    create: false
+  splunk:
+    hec:
+      indexName: "metrics"  # Specify a separate index for metrics
+
+
+
+
+
+

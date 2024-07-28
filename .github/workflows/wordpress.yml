@@ -46,23 +46,7 @@ jobs:
             --set wordpressPassword=password \
             --set wordpressScheme=https
 
-      ### send logs to spluk payload
-
-      - name: Send logs to Splunk
-        env:
-          SPLUNK_URL: ${{ secrets.SPLUNK_URL }}
-          SPLUNK_TOKEN: ${{ secrets.SPLUNK_TOKEN }}
-        run: |
-          echo "Starting log shipment to Splunk"
-
-          LOG_MESSAGE="GitHub Actions workflow triggered on push to main"
-          PAYLOAD="{\"event\": \"${LOG_MESSAGE}\", \"sourcetype\": \"github_actions\", \"index\": \"main\"}"
-
-          curl -k -H "Authorization: Splunk $SPLUNK_TOKEN" \
-               -d "$PAYLOAD" \
-               $SPLUNK_URL/services/collector
-
-          echo "Logs sent to Splunk"
+     
 
 
           
