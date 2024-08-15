@@ -1,4 +1,4 @@
-name: wordpress Deployment to EKS
+name: wordpress-Deployment to EKS
 on: 
   push: 
     branches: 
